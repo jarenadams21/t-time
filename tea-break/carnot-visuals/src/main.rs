@@ -5,8 +5,8 @@ use std::io::Write;
 // Dimensionless constants: k_B = 1, N = 1, so P V = T applies.
 
 // Carnot cycle parameters
-const T_H: f64 = 500.0;   // Hot reservoir temperature (K)
-const T_C: f64 = 300.0;   // Cold reservoir temperature (K)
+const T_H: f64 = 425.0;   // Hot reservoir temperature (K)
+const T_C: f64 = 278.0;   // Cold reservoir temperature (K)
 const GAMMA: f64 = 5.0/3.0; // Ratio of specific heats for monoatomic ideal gas
 const N_STEPS_ISOTHERMAL: usize = 500; // Number of steps for isothermal processes
 const N_STEPS_ADIABATIC: usize = 500;  // Number of steps for adiabatic processes
