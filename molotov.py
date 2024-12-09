@@ -65,10 +65,10 @@ for t in range(time_steps):
                     field[t,f,x,y,z] = rand_normal(0.0,0.1)
 
 # Energy parameters
-alpha_c = 1.0   # Carbon quadratic coefficient
-alpha_w = 0.5 * math.sqrt(0.5)   # Water quadratic coefficient
+alpha_c = 0.707   # Carbon quadratic coefficient
+alpha_w = 0.5 #* math.sqrt(0.5)   # Water quadratic coefficient
 beta_w = 0.1    # Water quartic coefficient
-gamma =  2.1 * math.pow(10,2)     # Carbon-water coupling strength (negative reduces energy)
+gamma =  5.1 * math.pow(math.pi,21)     # Carbon-water coupling strength (negative reduces energy)
 delta = 0.05    # Neighbor interaction for water smoothing
 
 directions = [(1,0,0),(-1,0,0),(0,1,0),(0,-1,0),(0,0,1),(0,0,-1)]
