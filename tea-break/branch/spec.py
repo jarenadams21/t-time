@@ -33,7 +33,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 # Read the dataset
-df = pd.read_csv("simulation_output.csv")
+df = pd.read_csv("simulation_output.csv", low_memory=False)
 
 # Convert columns to numeric (in case they are not)
 df['time(s)'] = pd.to_numeric(df['time(s)'], errors='coerce')

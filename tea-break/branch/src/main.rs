@@ -1,5 +1,23 @@
 use std::f64::consts::PI;
 use std::io::Write;
+use lazy_static::lazy_static;
+
+
+// Fundamental constants matching 1:1 with the Standard Model and relativistic units
+// Units: c = ħ = k_B = 1, M_P = (8πG)^(-1/2)
+const MP: f64 = 2.435e18; // Reduced Planck mass in GeV
+const M: f64 = 1.0e9;     // Example scale, adjustable to tested scenario
+const HI: f64 = MP;       // Primeval scale at or below reduced Planck mass
+const H0: f64 = 1.0e-33;  // Present-day Hubble scale (~ in GeV)
+const NU: f64 = 0.001;    // Example small deviation parameter from rigid vacuum
+const OMEGA_M0: f64 = 0.3;
+const OMEGA_R0: f64 = 1e-5;
+
+
+lazy_static! {
+    static ref HF: f64 = H0*((OMEGA_M0/(1.0 - NU)).sqrt()); // Final de Sitter scale derived
+    static ref BETA: f64 = 1.0; // * (1.0/137.0) + 5.59 * 1e-44;
+}
 
 // Physical constants (CGS + suitable units):
 const C: f64 = 3.0e10;        // speed of light in cm/s
@@ -10,9 +28,9 @@ const R_E: f64 = 2.8179403262e-13; // classical electron radius (cm)
 
 // Approximate scenario parameters:
 const E_ISO_ERG: f64 = 1.0e55;      // isotropic energy in erg
-const DURATION: f64 = 600.0;        // seconds
+const DURATION: f64 = 15.0;        // seconds
 const R0: f64 = 1.0e13;             // initial radius in cm
-const BETA: f64 = 1.0;              // ultra-relativistic approximation
+            // ultra-relativistic approximation
 
 // Band function parameters:
 const ALPHA: f64 = -1.0;
@@ -60,7 +78,7 @@ fn total_energy_band(params: &Params) -> f64 {
 }
 
 fn find_norm_for_band() -> f64 {
-    let guess = 1.0;
+    let guess = 1.0e5;
     let mut params = Params{norm: guess};
     let total = total_energy_band(&params);
     let target = E_ISO_ERG;
@@ -157,12 +175,13 @@ impl State {
     }
 }
 
+// (2 × 511 keV = 1.022 MeV, resulting in a photon wavelength of 1.2132 pm) 
 fn main() {
     let norm = find_norm_for_band();
     let params = Params {norm};
     println!("Normalization for Band function: {}", params.norm);
 
-    let avg_E_kev = 300.0;
+    let avg_E_kev = 100.0;
     let avg_E_mev = avg_E_kev*KEV_TO_MEV;
     let avg_E_erg = avg_E_mev*MEV_TO_ERG;
     let vol = (4.0/3.0)*PI*R0.powi(3);
@@ -171,15 +190,15 @@ fn main() {
 
     let mut state = State::new(n_photon_init);
 
-    let total_time = 3600.0;
-    let dt = 1.0;
+    let total_time = 5000;
+    let dt = -1.0;
 
     let mut file = std::fs::File::create("simulation_output.csv").unwrap();
     writeln!(file, "time(s),radius(cm),n_photon(cm^-3),n_pairs(cm^-3)").unwrap();
 
     for _ in 0..(total_time as usize) {
         state.time += dt;
-        state.radius = R0 + BETA*C*state.time;
+        state.radius = R0 + *BETA*C*state.time;
         let scale = (R0/state.radius).powi(3);
         state.n_photon = n_photon_init*scale;
 
