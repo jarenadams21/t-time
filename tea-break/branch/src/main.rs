@@ -181,7 +181,7 @@ fn main() {
     let params = Params {norm};
     println!("Normalization for Band function: {}", params.norm);
 
-    let avg_E_kev = 100.0;
+    let avg_E_kev = 1.0;
     let avg_E_mev = avg_E_kev*KEV_TO_MEV;
     let avg_E_erg = avg_E_mev*MEV_TO_ERG;
     let vol = (4.0/3.0)*PI*R0.powi(3);
@@ -190,7 +190,7 @@ fn main() {
 
     let mut state = State::new(n_photon_init);
 
-    let total_time = 5000;
+    let total_time = 50;
     let dt = -1.0;
 
     let mut file = std::fs::File::create("simulation_output.csv").unwrap();
