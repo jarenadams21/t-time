@@ -27,4 +27,5 @@
 * Real number hard analysis
 * Review Yang-Mills, Kazula-Klein, and early holography in string theory
 * Mobile App (Swift) + Webapp for continuous lab notes, studies, experiments
+* History cone (normalization of the past and future light cones as a singular meta 4D slice)
 
