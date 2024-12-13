@@ -190,7 +190,7 @@ fn main() {
 
     let mut state = State::new(n_photon_init);
 
-    let total_time = 50;
+    let total_time = 5000;
     let dt = -1.0;
 
     let mut file = std::fs::File::create("simulation_output.csv").unwrap();

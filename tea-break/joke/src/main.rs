@@ -16,11 +16,11 @@ const NX: usize = 50;
 const NY: usize = 50;
 const NZ: usize = 50;
 const DX: f64 = 0.1;  // spatial step in meters
-const DT: f64 = 1e-3; // time step in seconds
+const DT: f64 = 1e-2; // time step in seconds 1e-3
 
 lazy_static! {
-    static ref LAMBDA_QCD: f64 = TWO.powi(35); // placeholder QCD scale
-    static ref T_CMB: f64 = 2.7255 * 150.17314; // K
+    static ref LAMBDA_QCD: f64 = TWO.powi(3); // placeholder QCD scale
+    static ref T_CMB: f64 = 2.7255; // K
 }
 
 // 3D arrays for photon and exotic matter densities
@@ -83,7 +83,7 @@ fn planck_number_density(T: f64) -> f64 {
     let t = T;
 
     let nu_min = 1.0e7;
-    let nu_max = 1.0e14;
+    let nu_max = 1.0e15; // should be 1.0e14
     let steps = 10000;
     let dnu = (nu_max - nu_min)/(steps as f64);
 
@@ -106,13 +106,13 @@ fn main() {
     let mut field = Field3D::new(NX, NY, NZ, n_photon_init);
 
     // Assume a uniform background magnetic field along z
-    let b_field = 1.0; // Tesla, as a placeholder
+    let b_field = 1.0; // 1e20; // Tesla, as a placeholder
 
     // Open file for output
     let mut file = std::fs::File::create("3d_sim_output.csv").unwrap();
     writeln!(file, "time(s), average_n_photon(m^-3), average_n_exotic(m^-3)").unwrap();
 
-    let total_time = 1.14; // run for 0.1 seconds for demo
+    let total_time = 10e-1 + (1.0+C.powi(4)).sqrt() * 0.00000000000000000125; // 10e-1 * C.powi(20); // run for 0.1 seconds for demo
     let steps = (total_time/DT) as usize;
 
     // We'll do a simple forward Euler update to show the concept
