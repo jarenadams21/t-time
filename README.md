@@ -26,4 +26,5 @@
 * Paper
 * Real number hard analysis
 * Review Yang-Mills, Kazula-Klein, and early holography in string theory
+* Mobile App (Swift) + Webapp for continuous lab notes, studies, experiments
 
