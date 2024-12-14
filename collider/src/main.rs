@@ -8,12 +8,12 @@ const HBAR: f64 = 1.054571817e-34;
 const K_B: f64 = 1.380649e-23;
 
 // Lattice parameters (3D space)
-const NX: usize = 20;
-const NY: usize = 20;
-const NZ: usize = 20;
+const NX: usize = 30;
+const NY: usize = 30;
+const NZ: usize = 30;
 const DX: f64 = 1.0;     // Spatial step (m)
 const DT: f64 = 0.10;    // Time step (s)
-const TOTAL_TIME: f64 = 100.0; // Longer simulation time: 100 s
+const TOTAL_TIME: f64 = 10000.0; // Longer simulation time: 100 s
 const STEPS: usize = (TOTAL_TIME / DT) as usize;
 
 // Magnetic field scale
@@ -85,7 +85,7 @@ impl FluidField {
 // Nonlinear QCD-like EoS:
 fn qcd_pressure(epsilon: f64) -> f64 {
     if epsilon > EPSILON_CRIT {
-        0.33 * epsilon.powf(4.0) // was 1.2
+        0.33 * epsilon.powf(1.022) // was 1.2
     } else {
         0.33 * epsilon
     }
