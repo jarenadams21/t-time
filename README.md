@@ -28,6 +28,7 @@
 * Review Yang-Mills, Kazula-Klein, and early holography in string theory
 * Mobile App (Swift) + Webapp for continuous lab notes, studies, experiments
 * History cone (normalization of the past and future light cones as a singular meta 4D slice)
+* Axion-Gravitional-Wave Paradigms, QGP, neutrinos, leptons, and exotic studies
 
 #### Helpful Constants
 * Fine structure constant = 1 / 137 --> quantifies strength of elementry charged particles
