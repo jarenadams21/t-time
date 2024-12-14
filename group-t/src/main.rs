@@ -13,7 +13,7 @@ const NY: usize = 20;
 const NZ: usize = 20;
 const DX: f64 = 1.0;   // m
 const DT: f64 = 0.10;  // s, artificially small for a lab analog
-const TOTAL_TIME: f64 = 0.05 * 1e3; // 10s total simulation time
+const TOTAL_TIME: f64 = 0.1 * 1e3; // 10s total simulation time
 
 // Hypothetical EoS parameters for a QCD-like fluid:
 fn qcd_pressure(epsilon: f64) -> f64 {
@@ -21,9 +21,10 @@ fn qcd_pressure(epsilon: f64) -> f64 {
     const qcd_steps: usize = 89;
     let mut partial: f64 = 1.022;
     for x in 0..qcd_steps {
-        partial *= (1.0e4/137.0)
+        partial *= (1.0e1/137.0)
     }
-    let c_s2 = 1.6436 * partial * 10e89; //1.22 * 10e28 * 1.0/3.0 * ((1e-1)/137.0); // radiation-like equation of state as a stand-in
+    let c_s2 = B_0 * (1.0/3.0 + 0.1/0.3 * (x as f64 / NX as f64).cos());
+    // let c_s2 = 1.0 ; // 1.6436 * partial * 10e89; //1.0 / 3.0; // radiation-like equation of state as a stand-in
     c_s2 * epsilon
 }
 
@@ -69,8 +70,8 @@ impl FluidField {
 fn metric_factor(t: f64, x: f64) -> f64 {
     // A small oscillation in the metric
     // g_ii = a^2(t)*(1 + h cos(omega t - kx))
-    let h = 1e-6; // tiny amplitude
-    let omega = 2.0*PI; // 1 Hz wave
+    let h = 1e-4 * (omega_1 * t - k_1 * x).cos() + 1e-5 * (omega_2 * t - k_2 * x).sin();
+    let omega = 2.0 * PI * 100.0; // Higher frequency
     let k = 2.0*PI/10.0; // wavelength 10 m
     1.0 + h*(omega*t - k*x).cos()
 }
