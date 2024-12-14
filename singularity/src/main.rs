@@ -2,6 +2,7 @@ use std::fs::File;
 use std::io::Write;
 use rand::Rng;
 use std::f64::consts::PI;
+use lazy_static::lazy_static;
 
 //----------------------------------------------
 // PHYSICAL CONSTANTS AND UNITS
@@ -11,7 +12,14 @@ const C: f64 = 2.99792458e8;        // speed of light (m/s)
 const HBAR: f64 = 1.054571817e-34;  // reduced Planck (J·s)
 const K_B: f64 = 1.380649e-23;      // Boltzmann (J/K)
 const G: f64 = 6.67430e-11;         // gravitational constant (m^3/kg/s^2)
-
+const R_E: f64 = 2.8179403262e-13; // classical electron radius in cm
+lazy_static! {
+    static ref BETA: f64 = 1.0;
+    // Thomson cross section:
+    static ref SIGMA_T: f64 = (8.0 * PI / 3.0) * R_E.powi(2);
+    // Axion: hypothetical low density ~1e32 m^-3
+    static ref AXION_INIT: f64 = AXION_INIT_MASS_VAL.powf(1.0);  // The singularity
+}
 // Conversion factors
 // 1 fm = 1e-15 m
 // Energy scale: 1 GeV = 1.6021765e-10 J
@@ -24,19 +32,19 @@ const G: f64 = 6.67430e-11;         // gravitational constant (m^3/kg/s^2)
 // SIMULATION PARAMETERS
 //----------------------------------------------
 // Lattice size: small box ~ (10 fm)^3 for demonstration
-const NX: usize = 5;
-const NY: usize = 5;
-const NZ: usize = 5;
+const NX: usize = 10;
+const NY: usize = 10;
+const NZ: usize = 10;
 
 // Spatial resolution
 const DX_FM: f64 = 0.5;          // 0.5 fm per cell
 const DX: f64 = DX_FM * 1e-15;   // in meters
 
 // Time step ~0.05 fm/c: 1 fm/c ~ 3.3356e-24 s, so 0.05 fm/c ~1.6678e-25 s
-const DT: f64 = 1.67e-25;
-
+//const DT: f64 = 1.67e-25;
+const DT: f64 = 1.22e-22;
 // Total time ~ 100 steps => 100*DT ~ 1.67e-23 s (a realistic QGP lifetime)
-const STEPS: usize = 100;
+const STEPS: usize = 1000;
 
 //----------------------------------------------
 // QGP PARAMETERS
@@ -54,7 +62,7 @@ const EPSILON_INIT: f64 = 3.2e35;
 // Axion: hypothetical low density ~1e32 m^-3
 // Neutrino: from thermal estimates ~1e35 m^-3
 const PHOTON_INIT: f64 = 1e38;
-const AXION_INIT: f64 = 1e32;
+const AXION_INIT_MASS_VAL: f64 = 1e32;
 const NEUTRINO_INIT: f64 = 1e35;
 
 
@@ -148,7 +156,7 @@ impl FluidField {
         FluidField {
             energy: vec![EPSILON_INIT; size],
             photon_density: vec![PHOTON_INIT; size],
-            axion_density: vec![AXION_INIT; size],
+            axion_density: vec![*AXION_INIT; size],
             neutrino_density: vec![NEUTRINO_INIT; size],
         }
     }

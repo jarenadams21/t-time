@@ -8,17 +8,17 @@ const HBAR: f64 = 1.054571817e-34;
 const K_B: f64 = 1.380649e-23;
 
 // Lattice parameters (3D space)
-const NX: usize = 30;
-const NY: usize = 30;
-const NZ: usize = 30;
+const NX: usize = 40;
+const NY: usize = 40;
+const NZ: usize = 40;
 const DX: f64 = 1.0;     // Spatial step (m)
-const DT: f64 = 0.10;    // Time step (s)
-const TOTAL_TIME: f64 = 10000.0; // Longer simulation time: 100 s
+const DT: f64 = 0.1;    // Time step (s)
+const TOTAL_TIME: f64 = 1000.0; // Longer simulation time: 100 s
 const STEPS: usize = (TOTAL_TIME / DT) as usize;
 
 // Magnetic field scale
 const MU_PRIMED: f64 = 4.0 * PI * 10e7;
-const B_0: f64 = 0.0; //1.0 * MU_PRIMED;  // 1 Tesla baseline (placeholder)
+const B_0: f64 = 1.0; //1.0 * MU_PRIMED.powi(64);  // 1 Tesla baseline (placeholder)
 
 // QCD-like parameters
 const EPSILON_CRIT: f64 = 1e6;
