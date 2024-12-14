@@ -13,11 +13,11 @@ const NX: usize = 50;
 const NY: usize = 50;
 const NZ: usize = 50;
 const DX: f64 = 0.1;      // spatial step in meters
-const DT: f64 = 1e-4;     // time step in seconds
+const DT: f64 = 1e-3;     // time step in seconds
 
 lazy_static! {
-    static ref LAMBDA_QCD: f64 = TWO.powi(3); // placeholder QCD scale
-    static ref T_CMB: f64 = 2.7255; // K
+    static ref LAMBDA_QCD: f64 = TWO.powi(28); // placeholder QCD scale
+    static ref T_CMB: f64 = 2.7255 * 400.0; // K
 }
 
 struct Field3D {
@@ -68,7 +68,7 @@ fn exotic_matter_rate(n_photon: f64) -> f64 {
 // Background magnetic field effect (symbolic):
 fn magnetic_attenuation_rate(b_field: f64, n_photon: f64) -> f64 {
     // Scale attenuation with B and photon density
-    1e-10 * b_field * n_photon
+    1.25663706 * 10e-6 * b_field * n_photon
 }
 
 // Planck distribution approximation for CMB photon number density
@@ -117,13 +117,13 @@ fn main() {
     // Initialize fields
     let mut field = Field3D::new(NX, NY, NZ, n_photon_init);
 
-    let b_field = 1.0; // Tesla as placeholder
+    let b_field = 1.0 * 4.0 * PI * PI * PI * PI * PI * PI * PI * PI * PI * PI * PI * 10e-10; // Tesla as placeholder
 
     // Compute characteristic scales:
     let (r_s, char_time, _mass_bh) = characteristic_scales();
 
     // Dimensionless diffusion coefficient:
-    let dimensionless_diffusion = 1e-24; 
+    let dimensionless_diffusion = 1e-3;
     // Physical D in m^2/s (scaling with black hole radius and time):
     let D = dimensionless_diffusion * (r_s * r_s / char_time);
 
@@ -131,7 +131,7 @@ fn main() {
     let mut file = std::fs::File::create("3d_sim_output.csv").unwrap();
     writeln!(file, "time(s), average_n_photon(m^-3), average_n_exotic(m^-3)").unwrap();
 
-    let total_time = 0.1 + (1.0 + C.powi(4)).sqrt() * 0.00000000000000000125;
+    let total_time = 0.1 + (1.0 + C.powi(4)).sqrt() * 0.0000000000000000000125;
     let steps = (total_time/DT) as usize;
 
     for step in 0..steps {
