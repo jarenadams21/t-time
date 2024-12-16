@@ -34,14 +34,14 @@ axion_masked = np.ma.masked_where(axion_masked <= EPS, axion_masked)
 neutrino_masked = np.ma.masked_where(neutrino_masked <= EPS, neutrino_masked)
 energy_masked = np.ma.masked_where(energy_masked <= EPS, energy_masked)
 
-# Particle density over time
+# Particle densities over time
 plt.figure(figsize=(10,6))
 plt.plot(time, photon_masked, label="Photon Density (avg)", color='green')
 plt.plot(time, axion_masked, label="Axion Density (avg)", color='purple')
 plt.plot(time, neutrino_masked, label="Neutrino Density (avg)", color='orange')
 plt.xlabel("Time (s)")
 plt.ylabel("Density (m^-3)")
-plt.title("Particle Density Evolution with Hecke (R-matrix) Steps")
+plt.title("Particle Density Evolution with Maxwell & Clifford Formalism")
 plt.yscale("log")
 plt.grid(True)
 plt.legend()
@@ -53,7 +53,7 @@ plt.figure(figsize=(10,6))
 plt.plot(time, energy_masked, label="Energy Density (avg)", color='blue')
 plt.xlabel("Time (s)")
 plt.ylabel("Energy Density (J/m^3)")
-plt.title("Energy Density Evolution")
+plt.title("Energy Density Evolution with Maxwell & Clifford formalism")
 plt.yscale("log")
 plt.grid(True)
 plt.legend()
@@ -78,10 +78,8 @@ if all(os.path.exists(f) for f in [photon_file, axion_file, neutrino_file, torsi
     z_vals = np.linspace(0, 1, NZ)
     x, y, z_ = np.meshgrid(x_vals, y_vals, z_vals, indexing='ij')
 
-    # Expected torsion field
     torsion_expected = np.sin(2*np.pi*x)*np.cos(2*np.pi*y)*np.exp(-z_)
 
-    # Compare Expected vs Actual Torsion at z=0
     z_slice = 0
     fig = plt.figure(figsize=(14,6))
     ax1 = fig.add_subplot(121, projection='3d')
@@ -104,7 +102,7 @@ if all(os.path.exists(f) for f in [photon_file, axion_file, neutrino_file, torsi
     plt.tight_layout()
     plt.show()
 
-    # Gradient Discrepancy
+    # Gradient discrepancy
     gradient_expected = np.gradient(torsion_expected, x_vals, y_vals, z_vals)
     gradient_actual = np.gradient(torsion_actual, x_vals, y_vals, z_vals)
     gradient_discrepancy = np.sqrt((gradient_expected[0]-gradient_actual[0])**2 +
@@ -120,23 +118,6 @@ if all(os.path.exists(f) for f in [photon_file, axion_file, neutrino_file, torsi
     plt.show()
 else:
     print("3D field data not fully available. Skipping 3D torsion visualization.")
-
-# Plot LIGO O4 Sensitivity
-if os.path.exists("ligo_o4_sensitivity.txt"):
-    ligo_data = np.loadtxt("ligo_o4_sensitivity.txt")
-    freq_data = ligo_data[:,0]
-    strain_data = ligo_data[:,1]
-
-    plt.figure(figsize=(10,6))
-    plt.loglog(freq_data, strain_data, label="LIGO O4 Sensitivity", color='black')
-    plt.xlabel("Frequency (Hz)")
-    plt.ylabel("Strain (1/√Hz)")
-    plt.title("LIGO O4 Strain Sensitivity Curve")
-    plt.grid(True, which='both', ls='--')
-    plt.legend()
-    plt.show()
-else:
-    print("LIGO O4 sensitivity data file not found (ligo_o4_sensitivity.txt). Skipping GW sensitivity plot.")
 
 # Print EoS Table
 print("QCD-based EoS Table:")
